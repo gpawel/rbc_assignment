@@ -16,14 +16,19 @@ public class SearchResultsPage extends Page {
     private By root = By.cssSelector(".search-page__result");
     private By pageTitle = By.cssSelector("h1.page-title__title");
     private By pagination = By.cssSelector(".pagination");
+    private By loadMoreButton = By.cssSelector("div.load-more-button>button");
+
+
 
 
 
     public SearchResultsPage(WebDriver driver, String query) {
         super(driver);
         this.query = query;
+        if (containsText("We were unable to find results for")) throw new RuntimeException("There is no result page for "+query);
         wait.until(ExpectedConditions.presenceOfElementLocated(root));
         wait.until(ExpectedConditions.presenceOfElementLocated(pageTitle));
+        wait.until(ExpectedConditions.presenceOfElementLocated(pagination));
 
     }
 
@@ -48,6 +53,25 @@ public class SearchResultsPage extends Page {
         String lastIndex = getAllRegExpFrom(paging.getText(),FIRST_LAST_ITEM_INDEX_REGEX).get(2);
         return Integer.parseInt(lastIndex);
     }
+
+    public void loadMore() {
+        wait.until(ExpectedConditions.presenceOfElementLocated(loadMoreButton));
+        wait.until(ExpectedConditions.elementToBeClickable(loadMoreButton));
+        driver.findElement(loadMoreButton).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(pagination));
+    }
+
+    public void loadMore(int pages) {
+        for (int i=0; i < pages; i++) loadMore();
+    }
+
+    public void loadAllPages() {
+        int totalFound = getTotalFound();
+        while(getLastItemIndexOnPage() < totalFound-getPagingIncremental()) {
+            loadMore();
+        }
+    }
+
 
     private WebElement getPagingElement() {
         return driver.findElement(pagination);

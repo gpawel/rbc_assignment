@@ -1,5 +1,6 @@
 package org.pg.rbc.assignment.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -16,7 +17,7 @@ public abstract class Page {
 
     public Page(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, 4 * Config.getConfig().getPauseInTest() / 1000);
+        this.wait = new WebDriverWait(driver, 3 * Config.getConfig().getPauseInTest() / 1000);
     }
 
     public List<String> getAllRegExpFrom(String input, String regExp) {
@@ -30,4 +31,10 @@ public abstract class Page {
         }
         return list;
     }
+
+    public boolean containsText(String text) {
+        return driver.getPageSource().contains(text);
+    }
+
+
 }

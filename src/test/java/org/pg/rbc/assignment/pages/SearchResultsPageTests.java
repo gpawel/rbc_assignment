@@ -43,4 +43,12 @@ public class SearchResultsPageTests extends BaseTest {
         Assert.assertEquals(itemsOnPage,48);
     }
 
+    @Test
+    public void loadAllPages() {
+        SearchResultsPage resultsPage = loblawsPage.search("apples");
+        resultsPage.loadAllPages();
+        int lastIndex = resultsPage.getLastItemIndexOnPage();
+        Assert.assertEquals(lastIndex,513);
+    }
+
 }

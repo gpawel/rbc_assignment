@@ -10,6 +10,7 @@ public class SearchResultsPageTests extends BaseTest {
 
     private LoblawsPage loblawsPage;
 
+
     @BeforeMethod
     public void setUpTestMethod() {
         loblawsPage = new LoblawsPage(driver);
@@ -20,4 +21,26 @@ public class SearchResultsPageTests extends BaseTest {
         SearchResultsPage resultsPage = loblawsPage.search("apples");
         Assert.assertNotNull(resultsPage);
     }
+
+    @Test
+    public void getTotlaFindings() {
+        SearchResultsPage resultsPage = loblawsPage.search("apples");
+        int total = resultsPage.getTotalFound();
+        Assert.assertEquals(total,513);
+    }
+
+    @Test
+    public void getItemsOnPageSinglePage() {
+        SearchResultsPage resultsPage = loblawsPage.search("asdf");
+        int itemsOnPage = resultsPage.getNumberOfItemsOnPages();
+        Assert.assertEquals(itemsOnPage,2);
+    }
+
+    @Test
+    public void getItemsOnPageMultiPage() {
+        SearchResultsPage resultsPage = loblawsPage.search("apples");
+        int itemsOnPage = resultsPage.getNumberOfItemsOnPages();
+        Assert.assertEquals(itemsOnPage,48);
+    }
+
 }

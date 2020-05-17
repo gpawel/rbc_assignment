@@ -12,15 +12,15 @@ public class SearchResultsPage extends Page {
     private static final String FIRST_LAST_ITEM_INDEX_REGEX = "(\\d*)-(\\d*)";
 
     private String query;
+    private int pageSize;
 
     private By root = By.cssSelector(".search-page__result");
     private By pageTitle = By.cssSelector("h1.page-title__title");
-    private By pagination = By.cssSelector(".pagination");
+    private By pagination = By.cssSelector("span.pagination > span");
     private By loadMoreButton = By.cssSelector("div.load-more-button>button");
-
-
-
-
+    int totalFound;
+    private By productsContainer = By.cssSelector(".product-grid__results__products");
+    private By productsGridFooter = By.cssSelector(".product-grid__results__footer");
 
     public SearchResultsPage(WebDriver driver, String query) {
         super(driver);
@@ -29,6 +29,8 @@ public class SearchResultsPage extends Page {
         wait.until(ExpectedConditions.presenceOfElementLocated(root));
         wait.until(ExpectedConditions.presenceOfElementLocated(pageTitle));
         wait.until(ExpectedConditions.presenceOfElementLocated(pagination));
+        pageSize = getNumberOfItemsOnPages();
+        totalFound = getTotalFound();
 
     }
 
@@ -55,10 +57,11 @@ public class SearchResultsPage extends Page {
     }
 
     public void loadMore() {
-        wait.until(ExpectedConditions.presenceOfElementLocated(loadMoreButton));
         wait.until(ExpectedConditions.elementToBeClickable(loadMoreButton));
         driver.findElement(loadMoreButton).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(pagination));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(pagination));
+
     }
 
     public void loadMore(int pages) {
@@ -66,12 +69,19 @@ public class SearchResultsPage extends Page {
     }
 
     public void loadAllPages() {
-        int totalFound = getTotalFound();
-        while(getLastItemIndexOnPage() < totalFound-getPagingIncremental()) {
-            loadMore();
-        }
+        int pages = (totalFound-pageSize)/pageSize + (totalFound%pageSize > 0 ? 1 : 0);
+        loadMore(pages);
+
+
     }
 
+    public String getQuery() {
+        return query;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
 
     private WebElement getPagingElement() {
         return driver.findElement(pagination);

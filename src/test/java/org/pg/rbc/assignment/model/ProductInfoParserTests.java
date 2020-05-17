@@ -46,7 +46,7 @@ public class ProductInfoParserTests extends BaseTest {
     }
 
     @Test
-    public void parseProductSales() {
+    public void parseProductSales1() {
         String prodId = "20606349001_EA";
         SearchResultsPage resultsPage = loblawsPage.search("apples");
         List<WebElement> prods = resultsPage.getProductById(prodId);
@@ -56,5 +56,16 @@ public class ProductInfoParserTests extends BaseTest {
         parser.getProducts(root);
     }
 
-    //20310940001_KG
+    @Test
+    public void parseProductSales2() {
+        String prodId = "20632238001_EA";
+        SearchResultsPage resultsPage = loblawsPage.search("apples");
+        List<WebElement> prods = resultsPage.getProductById(prodId);
+        Assert.assertFalse(prods.isEmpty());
+        WebElement root = prods.get(0);
+        ProductInfoParser parser = new ProductInfoParser(driver);
+        parser.getProducts(root);
+    }
+
+    //
 }

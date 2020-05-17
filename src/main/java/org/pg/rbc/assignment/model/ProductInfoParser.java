@@ -12,8 +12,9 @@ public class ProductInfoParser {
     private List<WebElement> products = new ArrayList<WebElement>();;
 
     private By productId = By.xpath("./div[@data-track-product-id]");
+    private String productIndex = "//div[@data-track-product-index]";
     private String salesText = "//div[contains(@class,'product-badge__icon__text product-badge__icon__text--sale')]";
-    private String salesEnds = "//div[contains(@class,'product-badge__icon__expiry product-badge__icon__expiry--sale')]";
+    private String salesExpire = "//div[contains(@class,'product-badge__icon__expiry product-badge__icon__expiry--sale')]";
     private String productEyeBrow = "//div[contains(@class,'product-tile__eyebrow')]";
     private String productBrand = "//span[contains(@class,'product-name__item product-name__item--brand')]";
     private String productName = "//span[contains(@class,'product-name__item product-name__item--name')]";
@@ -55,8 +56,15 @@ public class ProductInfoParser {
 
     public Product parseProductById (String productId) {
         String root  = "//div[@data-track-product-id='" + productId + "']/..";
+        String prodId = productId;
+        String prodIndex = driver.findElement(By.xpath(root+productIndex)).getAttribute("data-track-product-index");
         String sales = getValue(root+salesText);
-        String salesExpires = getValue(root+salesEnds);
+        String salesExpires = getValue(root+ salesExpire);
+        String prodEyeBrow = getValue(root+productEyeBrow);
+        String prodBrand = getValue(root+productBrand);
+        String prodName = getValue(root+productName);
+        String prodSize = getValue(root+productSize);
+        String prodText = getValue(root + productText);
         return null;
     }
 
@@ -72,9 +80,13 @@ public class ProductInfoParser {
 
     private String getValue(String xpath, int index) {
         List<WebElement> r = driver.findElements(By.xpath(xpath));
-        if (index > r.size()-1) throw new RuntimeException(index + " is out of boundaries from results found by " + xpath);
         if (r.isEmpty()) return "";
-        else return r.get(index).getText();
+        if (index > r.size()-1) throw new RuntimeException(index + " is out of boundaries from results found by " + xpath);
+        return r.get(index).getText();
+    }
+
+    private List<Price> getPrice(String xpath) {
+        return null;
     }
 
 }

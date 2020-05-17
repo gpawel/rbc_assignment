@@ -19,6 +19,7 @@ public class SearchResultsPage extends Page {
     private By pagination = By.cssSelector("span.pagination > span");
     private By loadMoreButton = By.cssSelector("div.load-more-button>button");
     private By productInfo = By.cssSelector(".product-tile-group__list__item");
+
     private int totalFound;
 
     public SearchResultsPage(WebDriver driver, String query) {
@@ -83,6 +84,13 @@ public class SearchResultsPage extends Page {
     public int getPageSize() {
         return pageSize;
     }
+
+    public List<WebElement> getProductById(String productId) {
+        String xpathStr = "//div[@data-track-product-id='" + productId + "']/..";
+        By xpath = By.xpath(xpathStr);
+        return driver.findElements(xpath);
+    }
+
 
     private WebElement getPagingElement() {
         return driver.findElement(pagination);

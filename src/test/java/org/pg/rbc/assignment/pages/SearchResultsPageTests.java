@@ -33,7 +33,7 @@ public class SearchResultsPageTests extends BaseTest {
     public void getItemsOnPageSinglePage() {
         SearchResultsPage resultsPage = loblawsPage.search("asdf");
         int itemsOnPage = resultsPage.getNumberOfItemsOnPages();
-        Assert.assertEquals(itemsOnPage,2);
+        Assert.assertEquals(itemsOnPage,resultsPage.getLastItemIndexOnPage());
     }
 
     @Test
@@ -57,7 +57,9 @@ public class SearchResultsPageTests extends BaseTest {
         SearchResultsPage resultsPage = loblawsPage.search("asdf");
         resultsPage.loadAllPages();
         int lastIndex = resultsPage.getLastItemIndexOnPage();
-        Assert.assertEquals(lastIndex,2);
+        Assert.assertEquals(lastIndex,resultsPage.getLastItemIndexOnPage());
     }
+
+
 
 }

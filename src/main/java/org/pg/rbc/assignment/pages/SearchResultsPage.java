@@ -35,23 +35,23 @@ public class SearchResultsPage extends Page {
 
     }
 
-    int getTotalFound() {
+    public int getTotalFound() {
         WebElement title = driver.findElement(pageTitle);
         List<String> found = getAllRegExpFrom(title.getText(),GET_TOTAL_REGEX);
         return Integer.parseInt(found.get(1));
     }
 
-    int getNumberOfItemsOnPages() {
+    public int getNumberOfItemsOnPages() {
         return getLastItemIndexOnPage() - getFirstItemIndexOnPage() + 1;
     }
 
-    int getFirstItemIndexOnPage() {
+    public int getFirstItemIndexOnPage() {
         WebElement paging = getPagingElement();
         String firstIndex = getAllRegExpFrom(paging.getText(),FIRST_LAST_ITEM_INDEX_REGEX).get(1);
         return Integer.parseInt(firstIndex);
     }
 
-    int getLastItemIndexOnPage() {
+    public int getLastItemIndexOnPage() {
         WebElement paging = getPagingElement();
         String lastIndex = getAllRegExpFrom(paging.getText(),FIRST_LAST_ITEM_INDEX_REGEX).get(2);
         return Integer.parseInt(lastIndex);

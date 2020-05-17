@@ -91,6 +91,15 @@ public class ProductInfoParserTests extends BaseTest {
         List<WebElement> foundElements = resultsPage.getAllFoundProducts();
         ProductInfoParser parser = new ProductInfoParser(driver);
         List<Product> prods = parser.parse(foundElements);
-        Assert.assertEquals(prods.size(),2);
+        Assert.assertEquals(prods.size(),resultsPage.getLastItemIndexOnPage());
+    }
+
+    @Test
+    public void parseLongListOfProducts() {
+        SearchResultsPage resultsPage = loblawsPage.search("milk");
+        List<WebElement> foundElements = resultsPage.getAllFoundProducts();
+        ProductInfoParser parser = new ProductInfoParser(driver);
+        List<Product> prods = parser.parse(foundElements);
+        Assert.assertEquals(prods.size(),resultsPage.getLastItemIndexOnPage());
     }
 }

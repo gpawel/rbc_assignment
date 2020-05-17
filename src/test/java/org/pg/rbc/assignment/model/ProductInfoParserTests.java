@@ -3,6 +3,7 @@ package org.pg.rbc.assignment.model;
 import org.openqa.selenium.WebElement;
 import org.pg.rbc.assignment.BaseTest;
 import org.pg.rbc.assignment.pages.LoblawsPage;
+import org.pg.rbc.assignment.pages.ProductInfoParser;
 import org.pg.rbc.assignment.pages.SearchResultsPage;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -67,5 +68,16 @@ public class ProductInfoParserTests extends BaseTest {
         parser.getProducts(root);
     }
 
-    //
+    @Test
+    public void parseProductSales3() {
+        String prodId = "20613154001_EA";
+        SearchResultsPage resultsPage = loblawsPage.search("apples");
+        List<WebElement> prods = resultsPage.getProductById(prodId);
+        Assert.assertFalse(prods.isEmpty());
+        WebElement root = prods.get(0);
+        ProductInfoParser parser = new ProductInfoParser(driver);
+        parser.getProducts(root);
+    }
+
+    //20613154001_EA
 }

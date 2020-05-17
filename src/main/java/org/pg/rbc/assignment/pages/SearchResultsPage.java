@@ -20,6 +20,7 @@ public class SearchResultsPage extends Page {
     private By loadMoreButton = By.cssSelector("div.load-more-button>button");
     private By productInfo = By.cssSelector(".product-tile-group__list__item");
 
+
     private int totalFound;
 
     public SearchResultsPage(WebDriver driver, String query) {
@@ -90,6 +91,7 @@ public class SearchResultsPage extends Page {
         By xpath = By.xpath(xpathStr);
         return driver.findElements(xpath);
     }
+
 
 
     private WebElement getPagingElement() {

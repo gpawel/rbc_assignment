@@ -1,5 +1,7 @@
 package org.pg.rbc.assignment.model;
 
+import org.pg.rbc.assignment.utils.MathUtils;
+
 import java.text.DecimalFormat;
 
 public class Price implements Comparable<Price> {
@@ -38,7 +40,7 @@ public class Price implements Comparable<Price> {
     }
 
     public double getValue() {
-        return value;
+        return MathUtils.roundDouble(value,2);
     }
 
     public String getValueAsString() {

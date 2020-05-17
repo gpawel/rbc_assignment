@@ -59,6 +59,7 @@ public class ProductInfoParser extends Page {
         String root  = "//div[@data-track-product-id='" + productId + "']/..";
         String prodId = productId;
         String prodIndex = driver.findElement(By.xpath(root+productIndex)).getAttribute("data-track-product-index");
+        int index = Integer.parseInt(prodIndex);
         String sales = getValue(root+salesText);
         String salesExpires = getValue(root+ salesExpire);
         String prodEyeBrow = getValue(root+productEyeBrow);
@@ -69,13 +70,12 @@ public class ProductInfoParser extends Page {
         Price salesPriceNow = parseSalesPrice(root,sellingPriceValue,sellingPriceType);
         Price salesPriceWas = parseSalesPrice(root,sellingPriceWasValue,sellingPriceWasType);
         List<Price> comparisonPrices = parseComparisonPrices(root,comparisonPriceValue,comparisonPriceUnit);
-        return null;
+        return new Product(prodId,index,sales,salesExpires,prodEyeBrow,prodBrand,prodName,prodSize,prodText,salesPriceNow,salesPriceWas,comparisonPrices);
     }
 
     private Product parseSingleProductElement(WebElement root) {
         String prodId = root.findElement(productId).getAttribute("data-track-product-id");
-        parseProductById(prodId);
-        return null;
+        return parseProductById(prodId);
     }
 
     private String getValue(String xpath) {
@@ -94,7 +94,8 @@ public class ProductInfoParser extends Page {
         if (value.isEmpty()) return null;// TODO need to have kind of empty price object.
         value = getDollarValue(value);
         String type = getValue(rootXpath+typeXpath);
-        return new Price(Double.parseDouble(value),type, Unit.EA);
+        double dollars = Double.parseDouble(value);
+        return new Price(dollars,type, Unit.EA);
     }
 
     private List<Price> parseComparisonPrices (String rootXpath, String valueXpath, String unitXpath) {
@@ -108,7 +109,8 @@ public class ProductInfoParser extends Page {
         for (int i=0; i < howMany; i++) {
             String v = getDollarValue(values.get(i).getText());
             Unit u = getUnit(units.get(i).getText());
-            Price p = new Price(Double.parseDouble(v),"",u);
+            double dollars = Double.parseDouble(v);
+            Price p = new Price(dollars,"",u);
             comparionPrices.add(p);
         }
         return comparionPrices;
@@ -131,6 +133,8 @@ public class ProductInfoParser extends Page {
         if (value.startsWith("$")) return value.substring(1);
         return value;
     }
+
+
 
 
 }

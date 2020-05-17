@@ -2,7 +2,7 @@ package org.pg.rbc.assignment.model;
 
 import java.util.List;
 
-public class Product {
+public class Product implements Comparable<Product> {
     private String id;
     private int productIndex;
     private String salesText;
@@ -16,6 +16,71 @@ public class Product {
     private Price sellingPiceWas; // unit always Unit.EA
     private List<Price> comparisonPrices;
 
+    public Product(String id, int productIndex, String salesText, String salesEnds, String productEyeBrow, String productBrand, String productName, String productSize, String productText, Price sellingPriceNow, Price sellingPiceWas, List<Price> comparisonPrices) {
+        this.id = id;
+        this.productIndex = productIndex;
+        this.salesText = salesText;
+        this.salesEnds = salesEnds;
+        this.productEyeBrow = productEyeBrow;
+        this.productBrand = productBrand;
+        this.productName = productName;
+        this.productSize = productSize;
+        this.productText = productText;
+        this.sellingPriceNow = sellingPriceNow;
+        this.sellingPiceWas = sellingPiceWas;
+        this.comparisonPrices = comparisonPrices;
+    }
 
+    @Override
+    public int compareTo(Product p) {
+        return this.sellingPriceNow.compareTo(p.getSellingPriceNow());
+    }
 
+    public String getId() {
+        return id;
+    }
+
+    public int getProductIndex() {
+        return productIndex;
+    }
+
+    public String getSalesText() {
+        return salesText;
+    }
+
+    public String getSalesEnds() {
+        return salesEnds;
+    }
+
+    public String getProductEyeBrow() {
+        return productEyeBrow;
+    }
+
+    public String getProductBrand() {
+        return productBrand;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public String getProductSize() {
+        return productSize;
+    }
+
+    public String getProductText() {
+        return productText;
+    }
+
+    public Price getSellingPriceNow() {
+        return sellingPriceNow;
+    }
+
+    public Price getSellingPiceWas() {
+        return sellingPiceWas;
+    }
+
+    public List<Price> getComparisonPrices() {
+        return comparisonPrices;
+    }
 }

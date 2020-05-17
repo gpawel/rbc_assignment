@@ -18,9 +18,8 @@ public class SearchResultsPage extends Page {
     private By pageTitle = By.cssSelector("h1.page-title__title");
     private By pagination = By.cssSelector("span.pagination > span");
     private By loadMoreButton = By.cssSelector("div.load-more-button>button");
-    int totalFound;
-    private By productsContainer = By.cssSelector(".product-grid__results__products");
-    private By productsGridFooter = By.cssSelector(".product-grid__results__footer");
+    private By productInfo = By.cssSelector(".product-tile-group__list__item");
+    private int totalFound;
 
     public SearchResultsPage(WebDriver driver, String query) {
         super(driver);
@@ -71,8 +70,10 @@ public class SearchResultsPage extends Page {
     public void loadAllPages() {
         int pages = (totalFound-pageSize)/pageSize + (totalFound%pageSize > 0 ? 1 : 0);
         loadMore(pages);
+    }
 
-
+    public List<WebElement> getAllFoundProducts() {
+        return driver.findElements(productInfo);
     }
 
     public String getQuery() {

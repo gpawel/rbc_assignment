@@ -46,9 +46,10 @@ public class SearchResultsPageTests extends BaseTest {
     @Test
     public void loadAllPages() {
         SearchResultsPage resultsPage = loblawsPage.search("milk");
+        int total = resultsPage.getTotalFound();
         resultsPage.loadAllPages();
         int lastIndex = resultsPage.getLastItemIndexOnPage();
-        Assert.assertEquals(lastIndex,1448);
+        Assert.assertEquals(lastIndex,total);
     }
 
     @Test

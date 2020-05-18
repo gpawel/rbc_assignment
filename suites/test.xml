@@ -2,6 +2,7 @@
 <suite name="assignment" verbose="1" >
 
     <parameter name="queri"  value="apples"/>
+
     <test name="Test 1">
         <classes>
             <class name="org.pg.rbc.assignment.assignment.Task1">
@@ -11,4 +12,15 @@
             </class>
         </classes>
     </test>
+   <!--
+    <test name="Test 2">
+        <classes>
+            <class name="org.pg.rbc.assignment.assignment.Task2">
+                <methods>
+                    <include name="testPriceReduction"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    -->
 </suite>

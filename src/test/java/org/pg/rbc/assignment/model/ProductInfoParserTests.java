@@ -1,7 +1,7 @@
 package org.pg.rbc.assignment.model;
 
 import org.openqa.selenium.WebElement;
-import org.pg.rbc.assignment.BaseTest;
+import org.pg.rbc.assignment.BaseUnitTest;
 import org.pg.rbc.assignment.pages.LoblawsPage;
 import org.pg.rbc.assignment.pages.ProductInfoParser;
 import org.pg.rbc.assignment.pages.SearchResultsPage;
@@ -9,10 +9,9 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.security.AllPermission;
 import java.util.List;
 
-public class ProductInfoParserTests extends BaseTest {
+public class ProductInfoParserTests extends BaseUnitTest {
     private LoblawsPage loblawsPage;
 
     @BeforeMethod
@@ -84,7 +83,7 @@ public class ProductInfoParserTests extends BaseTest {
     @Test
     public void parseShortListOfProducts() {
         SearchResultsPage resultsPage = loblawsPage.search("asdf");
-        List<WebElement> foundElements = resultsPage.getAllFoundProducts();
+        List<WebElement> foundElements = resultsPage.getAllFoundProductElements();
         ProductInfoParser parser = new ProductInfoParser(driver);
         List<Product> prods = parser.parse(foundElements);
         Assert.assertEquals(prods.size(),resultsPage.getLastItemIndexOnPage());
@@ -93,7 +92,7 @@ public class ProductInfoParserTests extends BaseTest {
     @Test
     public void parseOnePageListOfProducts() {
         SearchResultsPage resultsPage = loblawsPage.search("milk");
-        List<WebElement> foundElements = resultsPage.getAllFoundProducts();
+        List<WebElement> foundElements = resultsPage.getAllFoundProductElements();
         ProductInfoParser parser = new ProductInfoParser(driver);
         List<Product> prods = parser.parse(foundElements);
         Assert.assertEquals(prods.size(),resultsPage.getLastItemIndexOnPage());
@@ -103,7 +102,7 @@ public class ProductInfoParserTests extends BaseTest {
     public void parsAllApples() {
         SearchResultsPage resultsPage = loblawsPage.search("apples");
         resultsPage.loadAllPages();
-        List<WebElement> foundElements = resultsPage.getAllFoundProducts();
+        List<WebElement> foundElements = resultsPage.getAllFoundProductElements();
         ProductInfoParser parser = new ProductInfoParser(driver);
         List<Product> prods = parser.parse(foundElements);
         Assert.assertEquals(prods.size(),resultsPage.getLastItemIndexOnPage());

@@ -5,6 +5,7 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.pg.rbc.assignment.model.Product;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class SearchResultsPage extends Page {
     private By loadMoreButton = By.cssSelector("div.load-more-button>button");
     private By productInfo = By.cssSelector(".product-tile-group__list__item");
     private By sortDescXpath = By.xpath("//button[@data-option-value='price-desc']");
-    private By filters = By.cssSelector(".filter-group__header");
+    private By filters = By.xpath("//*[@class='filter-group__header']");
     private By priceReduction = By.cssSelector("[data-track-filter-type='promotions:Price-Reduction']");
 
 
@@ -90,17 +91,21 @@ public class SearchResultsPage extends Page {
         wait.until(ExpectedConditions.visibilityOfElementLocated(pagination));
     }
 
-    public void filterByPriceReduction() {
-        driver.findElements(filters).get(1).click();
+    public SearchResultsPage filterByPriceReduction() {
+        wait.until(ExpectedConditions.elementToBeClickable(filters));
+        if (isAisleExpended()) scrollByPixels(200);
+        WebElement el = driver.findElements(filters).get(1);
+        el.click();
         wait.until(ExpectedConditions.presenceOfElementLocated(priceReduction));
         wait.until(ExpectedConditions.elementToBeClickable(priceReduction));
         driver.findElement(priceReduction).click();
         scrollToTheTop();
         wait.until(ExpectedConditions.presenceOfElementLocated(pagination));
         wait.until(ExpectedConditions.visibilityOfElementLocated(pagination));
+        return new SearchResultsPage(driver,query);
     }
 
-    public List<WebElement> getAllFoundProducts() {
+    public List<WebElement> getAllFoundProductElements() {
         // TODO need to make custom explicit condition
         long start = System.currentTimeMillis();
         while(!isAllLoaded()) {
@@ -108,6 +113,12 @@ public class SearchResultsPage extends Page {
             if ((System.currentTimeMillis() - start)/1000 > 5) throw new TimeoutException("Unable to read all products from the search result page within 5 sec.");
         }
         return driver.findElements(productInfo);
+    }
+
+    public List<Product> getAllFoundProducts() {
+        List<WebElement> els = getAllFoundProductElements();
+        ProductInfoParser parser = new ProductInfoParser(driver);
+        return parser.getProducts(els);
     }
 
     public boolean isAllLoaded() {
@@ -130,6 +141,14 @@ public class SearchResultsPage extends Page {
         if (result.size()>1) throw new RuntimeException("More than one product found on the page");
         return result.get(0);
     }
+
+
+    private boolean isAisleExpended() {
+        WebElement aisle = driver.findElements(filters).get(0);
+        String exp = aisle.findElement(By.xpath("./button")).getAttribute("aria-expanded");
+        return exp.contains("true");
+    }
+
 
 
 

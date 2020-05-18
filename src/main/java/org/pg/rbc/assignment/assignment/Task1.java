@@ -20,11 +20,15 @@ public class Task1 extends BaseTest{
 
     @Test
     public void testProductsSorted() {
-        SearchResultsPage resultsPage = loblawsPage.search(query);
-        resultsPage.sortDesc();
+        resultsPage = loblawsPage.search(query);
         resultsPage.loadAllPages();
+        productList = resultsPage.getAllFoundProducts();
+        resultsPage.sortDesc();
         Catalogue catalogue = new Catalogue(productList);
         catalogue.sortProductsDesc();
+
+        resultsPage.sortDesc();
+        resultsPage.loadAllPages();
 
         Product mostExpenciveProduct = productList.get(0);
         Product mostExpenciveProductFromPage = parser.parseProductById(mostExpenciveProduct.getId());

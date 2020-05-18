@@ -17,6 +17,7 @@ public class BaseTest {
     public static List<Product> productList;
     public static String query;
     public static LoblawsPage loblawsPage;
+    public static SearchResultsPage resultsPage;
     @Parameters({ "query" })
     @BeforeSuite
     public void setUpSuite(@Optional("apples") String searchString) {
@@ -25,11 +26,7 @@ public class BaseTest {
         driver = ChromeDriverFactory.createChromeDriver();
         driver.get("https://www.loblaws.ca/");
         loblawsPage = new LoblawsPage(driver);
-        SearchResultsPage resultsPage = loblawsPage.search(query);
-        resultsPage.loadAllPages();
-        List<WebElement> webElementsList = resultsPage.getAllFoundProducts();
-        ProductInfoParser parser = new ProductInfoParser(driver);
-        productList = parser.getProducts(webElementsList);
+
     }
 
     @BeforeMethod

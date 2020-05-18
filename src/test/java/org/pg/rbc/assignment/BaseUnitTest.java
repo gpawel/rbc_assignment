@@ -3,9 +3,10 @@ package org.pg.rbc.assignment;
 import org.openqa.selenium.WebDriver;
 import org.pg.rbc.assignment.driver.ChromeDriverFactory;
 import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
-public class BaseTest {
+public class BaseUnitTest {
     protected static WebDriver driver = null;
     @BeforeSuite
     public void setUpSuite() {
@@ -14,6 +15,8 @@ public class BaseTest {
         else System.setProperty("env","windows");
         driver = ChromeDriverFactory.createChromeDriver();
     }
+
+
     @AfterSuite
     public void tearDownSuite() {
         //driver.quit();

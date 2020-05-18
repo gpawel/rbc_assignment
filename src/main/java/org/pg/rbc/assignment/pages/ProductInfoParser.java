@@ -70,7 +70,7 @@ public class ProductInfoParser extends Page {
         String prodBrand = getValue(root+productBrand);
         String prodName = getValue(root+productName);
         String prodSize = getValue(root+productSize);
-        String prodText = getValue(root + productText);
+        String prodText = getProductText(root + productText);
         Price salesPriceNow = parseSalesPrice(root,sellingPriceValue,sellingPriceType);
         Price salesPriceWas = parseSalesPrice(root,sellingPriceWasValue,sellingPriceWasType);
         List<Price> comparisonPrices = parseComparisonPrices(root,comparisonPriceValue,comparisonPriceUnit);
@@ -144,6 +144,13 @@ public class ProductInfoParser extends Page {
     private String getDollarValue(String value) {
         if (value.startsWith("$")) return value.substring(1);
         return value;
+    }
+
+    private String getProductText(String xpath) {
+        List<WebElement> r = getElementsByXpath(xpath);
+        if (r.isEmpty()) return "";
+        if (r.size()>1) return r.get(r.size()-1).getText();
+        return r.get(0).getText();
     }
 
 

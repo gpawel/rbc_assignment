@@ -1,8 +1,12 @@
 package org.pg.rbc.assignment.pages;
 
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.pg.rbc.assignment.config.Config;
@@ -41,6 +45,36 @@ public abstract class Page {
     public void scrollToTheBottom() {
         JavascriptExecutor js = ((JavascriptExecutor) driver);
         js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+    }
+
+    public void moveToElement(By locator) {
+        wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+        WebElement el = driver.findElement(locator);
+        moveToElement(el);
+    }
+
+    public void moveToElement(WebElement el) {
+        Actions actions = new Actions(driver);
+        actions.moveToElement(el);
+        actions.perform();
+    }
+
+    public void scrollToElement(By locator) {
+        wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+        WebElement element = driver.findElement(By.id("id_of_element"));
+        scrollToElement(element);
+    }
+
+    public void scrollToElement(WebElement element) {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+        wait.until(ExpectedConditions.visibilityOfAllElements(element));
+    }
+
+    public void scrollByPixels(int length) {
+        JavascriptExecutor js = (JavascriptExecutor)driver;
+        String command = "window.scrollBy(0,"+length+")";
+        js.executeScript(command, "");
+
     }
 
     public boolean containsText(String text) {

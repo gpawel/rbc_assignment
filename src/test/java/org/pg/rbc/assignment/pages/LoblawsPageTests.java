@@ -1,10 +1,10 @@
 package org.pg.rbc.assignment.pages;
 
-import org.pg.rbc.assignment.BaseTest;
+import org.pg.rbc.assignment.BaseUnitTest;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class LoblawsPageTests extends BaseTest {
+public class LoblawsPageTests extends BaseUnitTest {
 
 
     @Test

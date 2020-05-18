@@ -38,8 +38,21 @@ public abstract class Page {
         js.executeScript("window.scrollTo(0, 0)");
     }
 
+    public void scrollToTheBottom() {
+        JavascriptExecutor js = ((JavascriptExecutor) driver);
+        js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+    }
+
     public boolean containsText(String text) {
         return driver.getPageSource().contains(text);
+    }
+
+    public void pause(long mills) {
+        try {
+            Thread.sleep(mills);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 

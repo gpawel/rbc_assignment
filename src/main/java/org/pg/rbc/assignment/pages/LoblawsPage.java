@@ -13,6 +13,8 @@ public class LoblawsPage extends Page {
 
     private By content = By.id("site-content");
     private By queryField = By.cssSelector(".search-form__typeahead__search-input__input");
+    private By logo = By.cssSelector(".logo");
+    private By quickLinks = By.cssSelector(".block-wrapper.block-wrapper--block-type-block-cta-row.block-wrapper--block-style-vertical");
 
     public LoblawsPage(WebDriver driver) {
         super(driver);
@@ -30,6 +32,13 @@ public class LoblawsPage extends Page {
         element.sendKeys(product);
         element.sendKeys(Keys.ENTER);
         return new SearchResultsPage(driver, product);
+    }
+
+    public LoblawsPage goHomePage() {
+        scrollToTheTop();
+        driver.findElement(logo).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(quickLinks));
+        return this;
     }
 
 

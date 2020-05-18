@@ -13,6 +13,13 @@ public class LoblawsPageTests extends BaseTest {
         Assert.assertNotNull(lbl);
     }
 
+    @Test
+    public void testGoHome() {
+        LoblawsPage loblawsPage = new LoblawsPage(driver);
+        loblawsPage.search("milk");
+        loblawsPage.goHomePage();
+    }
+
 
 
 

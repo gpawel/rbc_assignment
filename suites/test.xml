@@ -1,8 +1,14 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="assignment" verbose="1" >
-    <test name="product_inquiry">
+
+    <parameter name="queri"  value="apples"/>
+    <test name="Test 1">
         <classes>
-            <class name="org.pg.rbc.assignment.test.BaseTest" />
+            <class name="org.pg.rbc.assignment.assignment.Task1">
+                <methods>
+                    <include name="testProductsSorted"/>
+                </methods>
+            </class>
         </classes>
     </test>
 </suite>

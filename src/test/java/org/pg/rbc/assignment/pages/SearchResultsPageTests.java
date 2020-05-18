@@ -2,6 +2,7 @@ package org.pg.rbc.assignment.pages;
 
 import org.openqa.selenium.WebElement;
 import org.pg.rbc.assignment.BaseTest;
+import org.pg.rbc.assignment.model.Catalogue;
 import org.pg.rbc.assignment.model.Product;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -107,8 +108,8 @@ public class SearchResultsPageTests extends BaseTest {
         List<WebElement> webElementsList = resultsPage.getAllFoundProducts();
         ProductInfoParser parser = new ProductInfoParser(driver);
         List<Product> productList = parser.getProducts(webElementsList);
-        Collections.sort(productList);
-        Collections.reverse(productList);
+        Catalogue catalogue = new Catalogue(productList);
+        catalogue.sortProductsDesc();
         resultsPage.scrollToTheTop();
 
         Assert.assertEquals(productList.size(),resultsPage.getLastItemIndexOnPage());
@@ -123,6 +124,18 @@ public class SearchResultsPageTests extends BaseTest {
         Product cheapestProdOnPage = parser.parseProductById(cheapestProdInList.getId());
         Assert.assertEquals(cheapestProdOnPage.getProductIndex(),resultsPage.getLastItemIndexOnPage());
 
+
+    }
+
+    @Test
+    public void testPriceReductionFilter() {
+        loblawsPage.goHomePage();
+        SearchResultsPage resultsPage = loblawsPage.search("milk");
+        resultsPage.filterByPriceReduction();
+    }
+
+    @Test
+    public void testPriceReduction() {
 
     }
 

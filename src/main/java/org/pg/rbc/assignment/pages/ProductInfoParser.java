@@ -63,24 +63,21 @@ public class ProductInfoParser extends Page {
         String prodId = productId;
         String prodIndex = driver.findElement(By.xpath(root+productIndex)).getAttribute("data-track-product-index");
         int index = Integer.parseInt(prodIndex);
-        //String sales = getValue(root+salesText);
-        //String salesExpires = getValue(root+ salesExpire);
+        log.info("its index is: "+index);
+        String sales = getValue(root+salesText);
+        String salesExpires = getValue(root+ salesExpire);
         //String prodEyeBrow = getValue(root+productEyeBrow);
         String prodBrand = getValue(root+productBrand);
         String prodName = getValue(root+productName);
         String prodSize = getValue(root+productSize);
-        //String prodText = getValue(root + productText);
+        String prodText = getValue(root + productText);
         Price salesPriceNow = parseSalesPrice(root,sellingPriceValue,sellingPriceType);
-        //Price salesPriceWas = parseSalesPrice(root,sellingPriceWasValue,sellingPriceWasType);
+        Price salesPriceWas = parseSalesPrice(root,sellingPriceWasValue,sellingPriceWasType);
         List<Price> comparisonPrices = parseComparisonPrices(root,comparisonPriceValue,comparisonPriceUnit);
         //return new Product(prodId,index,sales,salesExpires,prodEyeBrow,prodBrand,prodName,prodSize,prodText,salesPriceNow,salesPriceWas,comparisonPrices);
         //return new Product(prodId,index,prodBrand,prodName,prodSize,salesPriceNow,comparisonPrices);
-        return new Product(prodId,index, prodBrand,prodName,prodSize,salesPriceNow,comparisonPrices);
+        return new Product(prodId,index, sales, salesExpires,prodBrand,prodName,prodSize,prodText,salesPriceNow,salesPriceWas, comparisonPrices);
     }
-
-
-
-
 
     private Product parseSingleProductElement(WebElement root) {
         String prodId = root.findElement(By.xpath(productId)).getAttribute("data-track-product-id");

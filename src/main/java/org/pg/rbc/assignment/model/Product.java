@@ -5,17 +5,18 @@ import java.util.List;
 public class Product implements Comparable<Product> {
     private String id;
     private int productIndex;
-    //private String salesText;
-    //private String salesEnds;
+    private String salesText;
+    private String salesEnds;
     //private String productEyeBrow;
     private String productBrand;
     private String productName;
     private String productSize;
-    //private String productText;
+    private String productText;
     private Price sellingPriceNow; // unit always Unit.EA
-    //private Price sellingPiceWas; // unit always Unit.EA
+    private Price sellingPiceWas; // unit always Unit.EA
     private List<Price> comparisonPrices;
 
+    private boolean onSale=false;
     /*
     public Product(String id, int productIndex, String salesText, String salesEnds, String productEyeBrow, String productBrand, String productName, String productSize, String productText, Price sellingPriceNow, Price sellingPiceWas, List<Price> comparisonPrices) {
         this.id = id;
@@ -33,13 +34,18 @@ public class Product implements Comparable<Product> {
     }
      */
 
-    public Product(String id, int productIndex, String productBrand, String productName, String productSize, Price sellingPriceNow, List<Price> comparisonPrices) {
+    public Product(String id, int productIndex, String salesText, String salesEnds, String productBrand, String productName, String productSize, String productText, Price sellingPriceNow, Price sellingPiceWas, List<Price> comparisonPrices) {
         this.id = id;
         this.productIndex = productIndex;
+        this.salesText = salesText;
+        if (salesEnds.toLowerCase().contains("sale")) onSale = true;
+        this.salesEnds = salesEnds;
         this.productBrand = productBrand;
         this.productName = productName;
         this.productSize = productSize;
+        this.productText = productText;
         this.sellingPriceNow = sellingPriceNow;
+        this.sellingPiceWas = sellingPiceWas;
         this.comparisonPrices = comparisonPrices;
     }
 
@@ -56,6 +62,14 @@ public class Product implements Comparable<Product> {
         return productIndex;
     }
 
+    public String getSalesText() {
+        return salesText;
+    }
+
+    public String getSalesEnds() {
+        return salesEnds;
+    }
+
     public String getProductBrand() {
         return productBrand;
     }
@@ -68,11 +82,23 @@ public class Product implements Comparable<Product> {
         return productSize;
     }
 
+    public String getProductText() {
+        return productText;
+    }
+
     public Price getSellingPriceNow() {
         return sellingPriceNow;
     }
 
+    public Price getSellingPiceWas() {
+        return sellingPiceWas;
+    }
+
     public List<Price> getComparisonPrices() {
         return comparisonPrices;
+    }
+
+    public boolean isOnSale() {
+        return onSale;
     }
 }

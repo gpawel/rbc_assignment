@@ -1,6 +1,7 @@
 package org.pg.rbc.assignment.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -20,6 +21,8 @@ public class SearchResultsPage extends Page {
     private By loadMoreButton = By.cssSelector("div.load-more-button>button");
     private By productInfo = By.cssSelector(".product-tile-group__list__item");
     private By sortDescXpath = By.xpath("//button[@data-option-value='price-desc']");
+    private By filters = By.cssSelector(".filter-group__header");
+    private By priceReduction = By.cssSelector("[data-track-filter-type='promotions:Price-Reduction']");
 
 
     private int totalFound;
@@ -58,7 +61,10 @@ public class SearchResultsPage extends Page {
         return Integer.parseInt(lastIndex);
     }
 
+
+
     public void loadMore() {
+        scrollToTheBottom();
         wait.until(ExpectedConditions.elementToBeClickable(loadMoreButton));
         driver.findElement(loadMoreButton).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(pagination));
@@ -73,6 +79,7 @@ public class SearchResultsPage extends Page {
     public void loadAllPages() {
         int pages = (totalFound-pageSize)/pageSize + (totalFound%pageSize > 0 ? 1 : 0);
         loadMore(pages);
+        scrollToTheTop();
     }
 
     public void sortDesc() {
@@ -83,8 +90,28 @@ public class SearchResultsPage extends Page {
         wait.until(ExpectedConditions.visibilityOfElementLocated(pagination));
     }
 
+    public void filterByPriceReduction() {
+        driver.findElements(filters).get(1).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(priceReduction));
+        wait.until(ExpectedConditions.elementToBeClickable(priceReduction));
+        driver.findElement(priceReduction).click();
+        scrollToTheTop();
+        wait.until(ExpectedConditions.presenceOfElementLocated(pagination));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(pagination));
+    }
+
     public List<WebElement> getAllFoundProducts() {
+        // TODO need to make custom explicit condition
+        long start = System.currentTimeMillis();
+        while(!isAllLoaded()) {
+            pause(1000);
+            if ((System.currentTimeMillis() - start)/1000 > 5) throw new TimeoutException("Unable to read all products from the search result page within 5 sec.");
+        }
         return driver.findElements(productInfo);
+    }
+
+    public boolean isAllLoaded() {
+        return driver.findElements(productInfo).size() >= totalFound;
     }
 
     public String getQuery() {

@@ -19,6 +19,7 @@ public class SearchResultsPage extends Page {
     private By pagination = By.cssSelector("span.pagination > span");
     private By loadMoreButton = By.cssSelector("div.load-more-button>button");
     private By productInfo = By.cssSelector(".product-tile-group__list__item");
+    private By sortDescXpath = By.xpath("//button[@data-option-value='price-desc']");
 
 
     private int totalFound;
@@ -74,6 +75,14 @@ public class SearchResultsPage extends Page {
         loadMore(pages);
     }
 
+    public void sortDesc() {
+        scrollToTheTop();
+        WebElement button = driver.findElement(sortDescXpath);
+        button.click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(pagination));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(pagination));
+    }
+
     public List<WebElement> getAllFoundProducts() {
         return driver.findElements(productInfo);
     }
@@ -86,10 +95,13 @@ public class SearchResultsPage extends Page {
         return pageSize;
     }
 
-    public List<WebElement> getProductById(String productId) {
+    public WebElement getProductById(String productId) {
         String xpathStr = "//div[@data-track-product-id='" + productId + "']/..";
         By xpath = By.xpath(xpathStr);
-        return driver.findElements(xpath);
+        List<WebElement> result = driver.findElements(xpath);
+        if (result.isEmpty()) throw new RuntimeException("Product with id "+productId+" is not found.");
+        if (result.size()>1) throw new RuntimeException("More than one product found on the page");
+        return result.get(0);
     }
 
 

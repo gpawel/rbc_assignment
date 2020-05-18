@@ -24,60 +24,56 @@ public class ProductInfoParserTests extends BaseTest {
     public void findSingleProduct1() {
         String prodId = "20083526001_KG";
         SearchResultsPage resultsPage = loblawsPage.search("apples");
-        List<WebElement> prods = resultsPage.getProductById(prodId);
-        Assert.assertFalse(prods.isEmpty());
+        WebElement prod = resultsPage.getProductById(prodId);
+        Assert.assertTrue(prod != null);
     }
 
     @Test
     public void findSingleProduct2() {
         String prodId = "20725795001_EA";
         SearchResultsPage resultsPage = loblawsPage.search("apples");
-        List<WebElement> prods = resultsPage.getProductById(prodId);
-        Assert.assertFalse(prods.isEmpty());
+        WebElement prod = resultsPage.getProductById(prodId);
+        Assert.assertTrue(prod != null);
     }
 
     @Test
     public void parseProductId() {
         String prodId = "20725795001_EA";
         SearchResultsPage resultsPage = loblawsPage.search("apples");
-        List<WebElement> prods = resultsPage.getProductById(prodId);
-        Assert.assertFalse(prods.isEmpty());
-        WebElement root = prods.get(0);
         ProductInfoParser parser = new ProductInfoParser(driver);
-        parser.getProducts(root);
+        Product pr = parser.parseProductById(prodId);
+        Assert.assertEquals(pr.getId(),prodId);
+
     }
 
     @Test
     public void parseProductSales1() {
         String prodId = "20606349001_EA";
         SearchResultsPage resultsPage = loblawsPage.search("apples");
-        List<WebElement> prods = resultsPage.getProductById(prodId);
-        Assert.assertFalse(prods.isEmpty());
-        WebElement root = prods.get(0);
+        WebElement prods = resultsPage.getProductById(prodId);
+        Assert.assertTrue(prods != null);
         ProductInfoParser parser = new ProductInfoParser(driver);
-        parser.getProducts(root);
+        Product pr = parser.getProducts(prods).get(0);
+        Assert.assertEquals(pr.getId(),prodId);
     }
 
     @Test
     public void parseProductSales2() {
         String prodId = "20632238001_EA";
         SearchResultsPage resultsPage = loblawsPage.search("apples");
-        List<WebElement> prods = resultsPage.getProductById(prodId);
-        Assert.assertFalse(prods.isEmpty());
-        WebElement root = prods.get(0);
+        WebElement prods = resultsPage.getProductById(prodId);
         ProductInfoParser parser = new ProductInfoParser(driver);
-        parser.getProducts(root);
+        Product pr = parser.getProducts(prods).get(0);
+        Assert.assertEquals(pr.getId(),prodId);
     }
 
     @Test
     public void parseProductSales3() {
         String prodId = "20613154001_EA";
         SearchResultsPage resultsPage = loblawsPage.search("apples");
-        List<WebElement> prods = resultsPage.getProductById(prodId);
-        Assert.assertFalse(prods.isEmpty());
-        WebElement root = prods.get(0);
+        WebElement prods = resultsPage.getProductById(prodId);
         ProductInfoParser parser = new ProductInfoParser(driver);
-        List<Product> list = parser.getProducts(root);
+        List<Product> list = parser.getProducts(prods);
         Assert.assertFalse(list.isEmpty());
         Product p = list.get(0);
         Assert.assertEquals(p.getProductBrand(),"PC Organics");
@@ -112,4 +108,6 @@ public class ProductInfoParserTests extends BaseTest {
         List<Product> prods = parser.parse(foundElements);
         Assert.assertEquals(prods.size(),resultsPage.getLastItemIndexOnPage());
     }
+
+
 }

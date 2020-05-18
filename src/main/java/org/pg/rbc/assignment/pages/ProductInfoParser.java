@@ -61,8 +61,8 @@ public class ProductInfoParser extends Page {
     public Product parseProductById (String productId) {
         String root  = "//div[@data-track-product-id='" + productId + "']/..";
         String prodId = productId;
-        //String prodIndex = driver.findElement(By.xpath(root+productIndex)).getAttribute("data-track-product-index");
-        //int index = Integer.parseInt(prodIndex);
+        String prodIndex = driver.findElement(By.xpath(root+productIndex)).getAttribute("data-track-product-index");
+        int index = Integer.parseInt(prodIndex);
         //String sales = getValue(root+salesText);
         //String salesExpires = getValue(root+ salesExpire);
         //String prodEyeBrow = getValue(root+productEyeBrow);
@@ -75,7 +75,7 @@ public class ProductInfoParser extends Page {
         List<Price> comparisonPrices = parseComparisonPrices(root,comparisonPriceValue,comparisonPriceUnit);
         //return new Product(prodId,index,sales,salesExpires,prodEyeBrow,prodBrand,prodName,prodSize,prodText,salesPriceNow,salesPriceWas,comparisonPrices);
         //return new Product(prodId,index,prodBrand,prodName,prodSize,salesPriceNow,comparisonPrices);
-        return new Product(prodId,prodBrand,prodName,prodSize,salesPriceNow,comparisonPrices);
+        return new Product(prodId,index, prodBrand,prodName,prodSize,salesPriceNow,comparisonPrices);
     }
 
 
@@ -102,7 +102,7 @@ public class ProductInfoParser extends Page {
     private Price parseSalesPrice(String rootXpath, String valueXpath, String typeXpath) {
         String value = getValue(rootXpath+valueXpath);
         if (value.isEmpty()) return null;// TODO need to have kind of empty price object.
-        value = getDollarValue(value);
+        value = getDollarValue(value.replace(",",""));
         String type = getValue(rootXpath+typeXpath);
         double dollars = Double.parseDouble(value);
         return new Price(dollars,type, Unit.EA);
@@ -117,7 +117,7 @@ public class ProductInfoParser extends Page {
         ArrayList<Price> comparionPrices = new ArrayList<>();
         int howMany = values.size();
         for (int i=0; i < howMany; i++) {
-            String v = getDollarValue(values.get(i).getText());
+            String v = getDollarValue(values.get(i).getText()).replace(",","");
             Unit u = getUnit(units.get(i).getText());
             double dollars = Double.parseDouble(v);
             Price p = new Price(dollars,"",u);
@@ -137,8 +137,10 @@ public class ProductInfoParser extends Page {
         else if (strValue.contains("ea")) return Unit.EA;
         else if (strValue.contains("100ml")) return Unit.HNDML;
         else if (strValue.contains("1ml")) return Unit.ONEML;
+        else if (strValue.contains("0ml")) return Unit.ZEROML;
         else if (strValue.contains("1g")) return Unit.ONEGR;
         else if (strValue.contains("0g")) return Unit.ZEROGR;
+        else if (strValue.contains("1pk")) return Unit.PKG;
         else throw new RuntimeException("Parsed unit value "+strValue+" is undefined.");
     }
 

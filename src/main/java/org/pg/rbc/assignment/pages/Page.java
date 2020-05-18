@@ -1,6 +1,7 @@
 package org.pg.rbc.assignment.pages;
 
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -30,6 +31,11 @@ public abstract class Page {
             }
         }
         return list;
+    }
+
+    public void scrollToTheTop() {
+        JavascriptExecutor js = (JavascriptExecutor)driver;
+        js.executeScript("window.scrollTo(0, 0)");
     }
 
     public boolean containsText(String text) {

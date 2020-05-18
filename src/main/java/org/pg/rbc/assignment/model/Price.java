@@ -68,14 +68,13 @@ public class Price implements Comparable<Price> {
         else if ((this.unit == Unit.HNDML) && (unit == Unit.ONEML)) return MathUtils.roundDouble(value / 100,2);
         else if ((this.unit == Unit.ONEML) && (unit == Unit.ONEML)) return MathUtils.roundDouble(value,2);
         else if ((this.unit == Unit.ONEML) && (unit == Unit.HNDML)) return MathUtils.roundDouble(value * 100,2);
+        else if ((this.unit == Unit.PKG) && (unit == Unit.PKG)) return MathUtils.roundDouble(value,2);
         else throw new RuntimeException("Unable to convert "+this.unit.toString()+" into "+unit.toString());
     }
 
     @Override
     public int compareTo(Price p) {
         double compare = p.getPricePer(this.unit);
-        if ( getValue() < compare ) return -1;
-        else if ( getValue() == compare ) return 0;
-        else return 1;
+        return Double.compare(getValue(),compare);
     }
 }

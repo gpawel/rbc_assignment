@@ -1,9 +1,15 @@
 package org.pg.rbc.assignment.pages;
 
+import org.openqa.selenium.WebElement;
 import org.pg.rbc.assignment.BaseTest;
+import org.pg.rbc.assignment.model.Product;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import javax.sql.rowset.WebRowSet;
+import java.util.Collections;
+import java.util.List;
 
 
 public class SearchResultsPageTests extends BaseTest {
@@ -59,6 +65,67 @@ public class SearchResultsPageTests extends BaseTest {
         int lastIndex = resultsPage.getLastItemIndexOnPage();
         Assert.assertEquals(lastIndex,resultsPage.getLastItemIndexOnPage());
     }
+
+    @Test
+    public void sortOnePageList() {
+        SearchResultsPage resultsPage = loblawsPage.search("appicot");
+        resultsPage.loadAllPages();
+        List<WebElement> webElementsList = resultsPage.getAllFoundProducts();
+        ProductInfoParser parser = new ProductInfoParser(driver);
+        List<Product> productList = parser.getProducts(webElementsList);
+        Collections.sort(productList);
+        Collections.reverse(productList);
+
+
+
+        Assert.assertEquals(productList.size(),resultsPage.getLastItemIndexOnPage());
+        resultsPage.sortDesc();
+
+        Product topProductInList = productList.get(0);
+        Product topProductOnPage = parser.parseProductById(topProductInList.getId());
+        Assert.assertEquals(topProductOnPage.getProductIndex(),1);
+
+        Product cheapestProdInList = productList.get(productList.size()-1);
+        Product cheapestProdOnPage = parser.parseProductById(cheapestProdInList.getId());
+        Assert.assertEquals(cheapestProdOnPage.getProductIndex(),47);
+
+
+    }
+
+    @Test
+    public void testScroll() {
+        SearchResultsPage resultsPage = loblawsPage.search("milk");
+        resultsPage.loadMore(3);
+        resultsPage.scrollToTheTop();
+        resultsPage.sortDesc();
+    }
+
+    @Test
+    public void sortAllProdsList() {
+        SearchResultsPage resultsPage = loblawsPage.search("apples");
+        resultsPage.loadAllPages();
+        List<WebElement> webElementsList = resultsPage.getAllFoundProducts();
+        ProductInfoParser parser = new ProductInfoParser(driver);
+        List<Product> productList = parser.getProducts(webElementsList);
+        Collections.sort(productList);
+        Collections.reverse(productList);
+        resultsPage.scrollToTheTop();
+
+        Assert.assertEquals(productList.size(),resultsPage.getLastItemIndexOnPage());
+        resultsPage.sortDesc();
+        resultsPage.loadAllPages();
+
+        Product topProductInList = productList.get(0);
+        Product topProductOnPage = parser.parseProductById(topProductInList.getId());
+        Assert.assertEquals(topProductOnPage.getProductIndex(),1);
+
+        Product cheapestProdInList = productList.get(productList.size()-1);
+        Product cheapestProdOnPage = parser.parseProductById(cheapestProdInList.getId());
+        Assert.assertEquals(cheapestProdOnPage.getProductIndex(),resultsPage.getLastItemIndexOnPage());
+
+
+    }
+
 
 
 

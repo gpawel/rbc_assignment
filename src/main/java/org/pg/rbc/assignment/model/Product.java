@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Product implements Comparable<Product> {
     private String id;
-    //private int productIndex;
+    private int productIndex;
     //private String salesText;
     //private String salesEnds;
     //private String productEyeBrow;
@@ -33,9 +33,9 @@ public class Product implements Comparable<Product> {
     }
      */
 
-    public Product(String id, String productBrand, String productName, String productSize, Price sellingPriceNow, List<Price> comparisonPrices) {
+    public Product(String id, int productIndex, String productBrand, String productName, String productSize, Price sellingPriceNow, List<Price> comparisonPrices) {
         this.id = id;
-        //this.productIndex = productIndex;
+        this.productIndex = productIndex;
         this.productBrand = productBrand;
         this.productName = productName;
         this.productSize = productSize;
@@ -50,6 +50,10 @@ public class Product implements Comparable<Product> {
 
     public String getId() {
         return id;
+    }
+
+    public int getProductIndex() {
+        return productIndex;
     }
 
     public String getProductBrand() {

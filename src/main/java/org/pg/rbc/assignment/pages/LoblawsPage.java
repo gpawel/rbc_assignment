@@ -15,6 +15,7 @@ public class LoblawsPage extends Page {
     private By queryField = By.cssSelector(".search-form__typeahead__search-input__input");
     private By logo = By.cssSelector(".logo");
     private By quickLinks = By.cssSelector(".block-wrapper.block-wrapper--block-type-block-cta-row.block-wrapper--block-style-vertical");
+    private By signIn = By.cssSelector(".sign-in.account__login-link");
 
     public LoblawsPage(WebDriver driver) {
         super(driver);
@@ -39,6 +40,12 @@ public class LoblawsPage extends Page {
         driver.findElement(logo).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(quickLinks));
         return this;
+    }
+
+    public SignIn signIn() {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(signIn));
+        driver.findElement(signIn).click();
+        return new SignIn(driver);
     }
 
 

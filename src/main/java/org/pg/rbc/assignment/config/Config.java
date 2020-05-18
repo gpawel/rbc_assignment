@@ -14,12 +14,15 @@ public class Config {
     }
 
 
-    protected String rootPath;
-    protected String resourcesPath;
-    protected String chromeDriverPath;
-    protected String env;
+    private String rootPath;
+    private String resourcesPath;
+    private String chromeDriverPath;
+    private String env;
+    private String userName;
+    private String userPassword;
 
-    protected long pauseInTest;
+
+    private long pauseInTest;
 
     private Config() {
         env = System.getProperty("env");
@@ -71,10 +74,17 @@ public class Config {
     private void setUpSuiteVariables() {
         chromeDriverPath = resourcesPath+"/drivers"+"/"+System.getProperty("chromeDriverExec");
         pauseInTest = Long.parseLong(System.getProperty("PAUSE_IN_TEST_MILLS"));
+        userName = System.getProperty("pc_user_name");
+        userPassword = System.getProperty("pc_user_password");
     }
 
 
+    public String getUserName() {
+        return userName;
+    }
 
-
+    public String getUserPassword() {
+        return userPassword;
+    }
 }
 

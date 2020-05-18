@@ -24,7 +24,10 @@ public class SearchResultsPage extends Page {
     private By sortDescXpath = By.xpath("//button[@data-option-value='price-desc']");
     private By filters = By.xpath("//*[@class='filter-group__header']");
     private By priceReduction = By.cssSelector("[data-track-filter-type='promotions:Price-Reduction']");
-
+    private By addButtonSelector = By.cssSelector("button.quantity-selector.quantity-selector--update.quantity-selector--horizontal.quantity-selector--product-tile.quantity-selector--add-to-cart.quantity-selector--add-to-list-button");
+    private By startNewOrderSelector = By.cssSelector("div.fulfillment-mode-flyout.fulfillment-mode-flyout--active");
+    private By pcExpressPickUpSelector = By.cssSelector("button.fulfillment-fork-option-tile.fulfillment-fork-option-tile--instacart");
+    private By selectLocationLinkLocator = By.cssSelector("a.store-locator-link.fulfillment-mode-select-location__button");
 
     private int totalFound;
 
@@ -142,12 +145,26 @@ public class SearchResultsPage extends Page {
         return result.get(0);
     }
 
+    public ShoppingCart addItemToShoppingCart(int productNumberOnPage) {
+        if (productNumberOnPage <1 ) throw new RuntimeException("Product number should be more than 0");
+        driver.findElements(addButtonSelector).get(productNumberOnPage-1).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(startNewOrderSelector));
+        driver.findElement(pcExpressPickUpSelector).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(selectLocationLinkLocator));
+        driver.findElement(selectLocationLinkLocator).click();
+        LocationSelector locationSelector = new LocationSelector(driver);
+        locationSelector.searchLocation("bathurst");
+        locationSelector.pickUpLocation(2);
+        return new ShoppingCart(driver);
+    }
 
     private boolean isAisleExpended() {
         WebElement aisle = driver.findElements(filters).get(0);
         String exp = aisle.findElement(By.xpath("./button")).getAttribute("aria-expanded");
         return exp.contains("true");
     }
+
+
 
 
 

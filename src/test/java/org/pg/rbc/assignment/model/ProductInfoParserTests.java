@@ -81,7 +81,7 @@ public class ProductInfoParserTests extends BaseTest {
         Assert.assertFalse(list.isEmpty());
         Product p = list.get(0);
         Assert.assertEquals(p.getProductBrand(),"PC Organics");
-        Assert.assertEquals(p.getProductIndex(),41);
+        Assert.assertEquals(p.getId(),prodId);
         Assert.assertEquals(p.getComparisonPrices().get(0).getValue(),5.90);
     }
 
@@ -95,8 +95,18 @@ public class ProductInfoParserTests extends BaseTest {
     }
 
     @Test
-    public void parseLongListOfProducts() {
+    public void parseOnePageListOfProducts() {
         SearchResultsPage resultsPage = loblawsPage.search("milk");
+        List<WebElement> foundElements = resultsPage.getAllFoundProducts();
+        ProductInfoParser parser = new ProductInfoParser(driver);
+        List<Product> prods = parser.parse(foundElements);
+        Assert.assertEquals(prods.size(),resultsPage.getLastItemIndexOnPage());
+    }
+
+    @Test
+    public void parsAllApples() {
+        SearchResultsPage resultsPage = loblawsPage.search("apples");
+        resultsPage.loadAllPages();
         List<WebElement> foundElements = resultsPage.getAllFoundProducts();
         ProductInfoParser parser = new ProductInfoParser(driver);
         List<Product> prods = parser.parse(foundElements);

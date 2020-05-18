@@ -6,15 +6,18 @@ import org.openqa.selenium.WebElement;
 import org.pg.rbc.assignment.model.Price;
 import org.pg.rbc.assignment.model.Product;
 import org.pg.rbc.assignment.model.Unit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProductInfoParser extends Page {
+    private static Logger log = LoggerFactory.getLogger(ProductInfoParser.class);
 
     private List<WebElement> products = new ArrayList<WebElement>();;
 
-    private By productId = By.xpath("./div[@data-track-product-id]");
+    private String productId = "./div[@data-track-product-id]";
     private String productIndex = "//div[@data-track-product-index]";
     private String salesText = "//div[contains(@class,'product-badge__icon__text product-badge__icon__text--sale')]";
     private String salesExpire = "//div[contains(@class,'product-badge__icon__expiry product-badge__icon__expiry--sale')]";
@@ -58,23 +61,30 @@ public class ProductInfoParser extends Page {
     public Product parseProductById (String productId) {
         String root  = "//div[@data-track-product-id='" + productId + "']/..";
         String prodId = productId;
-        String prodIndex = driver.findElement(By.xpath(root+productIndex)).getAttribute("data-track-product-index");
-        int index = Integer.parseInt(prodIndex);
-        String sales = getValue(root+salesText);
-        String salesExpires = getValue(root+ salesExpire);
-        String prodEyeBrow = getValue(root+productEyeBrow);
+        //String prodIndex = driver.findElement(By.xpath(root+productIndex)).getAttribute("data-track-product-index");
+        //int index = Integer.parseInt(prodIndex);
+        //String sales = getValue(root+salesText);
+        //String salesExpires = getValue(root+ salesExpire);
+        //String prodEyeBrow = getValue(root+productEyeBrow);
         String prodBrand = getValue(root+productBrand);
         String prodName = getValue(root+productName);
         String prodSize = getValue(root+productSize);
-        String prodText = getValue(root + productText);
+        //String prodText = getValue(root + productText);
         Price salesPriceNow = parseSalesPrice(root,sellingPriceValue,sellingPriceType);
-        Price salesPriceWas = parseSalesPrice(root,sellingPriceWasValue,sellingPriceWasType);
+        //Price salesPriceWas = parseSalesPrice(root,sellingPriceWasValue,sellingPriceWasType);
         List<Price> comparisonPrices = parseComparisonPrices(root,comparisonPriceValue,comparisonPriceUnit);
-        return new Product(prodId,index,sales,salesExpires,prodEyeBrow,prodBrand,prodName,prodSize,prodText,salesPriceNow,salesPriceWas,comparisonPrices);
+        //return new Product(prodId,index,sales,salesExpires,prodEyeBrow,prodBrand,prodName,prodSize,prodText,salesPriceNow,salesPriceWas,comparisonPrices);
+        //return new Product(prodId,index,prodBrand,prodName,prodSize,salesPriceNow,comparisonPrices);
+        return new Product(prodId,prodBrand,prodName,prodSize,salesPriceNow,comparisonPrices);
     }
 
+
+
+
+
     private Product parseSingleProductElement(WebElement root) {
-        String prodId = root.findElement(productId).getAttribute("data-track-product-id");
+        String prodId = root.findElement(By.xpath(productId)).getAttribute("data-track-product-id");
+        log.info("Parsing product: "+prodId);
         return parseProductById(prodId);
     }
 
@@ -126,6 +136,9 @@ public class ProductInfoParser extends Page {
         else if (strValue.contains("100g")) return Unit.HNDGR;
         else if (strValue.contains("ea")) return Unit.EA;
         else if (strValue.contains("100ml")) return Unit.HNDML;
+        else if (strValue.contains("1ml")) return Unit.ONEML;
+        else if (strValue.contains("1g")) return Unit.ONEGR;
+        else if (strValue.contains("0g")) return Unit.ZEROGR;
         else throw new RuntimeException("Parsed unit value "+strValue+" is undefined.");
     }
 

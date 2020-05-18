@@ -4,18 +4,19 @@ import java.util.List;
 
 public class Product implements Comparable<Product> {
     private String id;
-    private int productIndex;
-    private String salesText;
-    private String salesEnds;
-    private String productEyeBrow;
+    //private int productIndex;
+    //private String salesText;
+    //private String salesEnds;
+    //private String productEyeBrow;
     private String productBrand;
     private String productName;
     private String productSize;
-    private String productText;
+    //private String productText;
     private Price sellingPriceNow; // unit always Unit.EA
-    private Price sellingPiceWas; // unit always Unit.EA
+    //private Price sellingPiceWas; // unit always Unit.EA
     private List<Price> comparisonPrices;
 
+    /*
     public Product(String id, int productIndex, String salesText, String salesEnds, String productEyeBrow, String productBrand, String productName, String productSize, String productText, Price sellingPriceNow, Price sellingPiceWas, List<Price> comparisonPrices) {
         this.id = id;
         this.productIndex = productIndex;
@@ -30,6 +31,17 @@ public class Product implements Comparable<Product> {
         this.sellingPiceWas = sellingPiceWas;
         this.comparisonPrices = comparisonPrices;
     }
+     */
+
+    public Product(String id, String productBrand, String productName, String productSize, Price sellingPriceNow, List<Price> comparisonPrices) {
+        this.id = id;
+        //this.productIndex = productIndex;
+        this.productBrand = productBrand;
+        this.productName = productName;
+        this.productSize = productSize;
+        this.sellingPriceNow = sellingPriceNow;
+        this.comparisonPrices = comparisonPrices;
+    }
 
     @Override
     public int compareTo(Product p) {
@@ -38,22 +50,6 @@ public class Product implements Comparable<Product> {
 
     public String getId() {
         return id;
-    }
-
-    public int getProductIndex() {
-        return productIndex;
-    }
-
-    public String getSalesText() {
-        return salesText;
-    }
-
-    public String getSalesEnds() {
-        return salesEnds;
-    }
-
-    public String getProductEyeBrow() {
-        return productEyeBrow;
     }
 
     public String getProductBrand() {
@@ -68,16 +64,8 @@ public class Product implements Comparable<Product> {
         return productSize;
     }
 
-    public String getProductText() {
-        return productText;
-    }
-
     public Price getSellingPriceNow() {
         return sellingPriceNow;
-    }
-
-    public Price getSellingPiceWas() {
-        return sellingPiceWas;
     }
 
     public List<Price> getComparisonPrices() {

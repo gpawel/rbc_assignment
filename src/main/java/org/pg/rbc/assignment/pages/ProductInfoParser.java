@@ -79,7 +79,7 @@ public class ProductInfoParser extends Page {
         return new Product(prodId,index, sales, salesExpires,prodBrand,prodName,prodSize,prodText,salesPriceNow,salesPriceWas, comparisonPrices);
     }
 
-    private Product parseSingleProductElement(WebElement root) {
+    public Product parseSingleProductElement(WebElement root) {
         String prodId = root.findElement(By.xpath(productId)).getAttribute("data-track-product-id");
         log.info("Parsing product: "+prodId);
         return parseProductById(prodId);

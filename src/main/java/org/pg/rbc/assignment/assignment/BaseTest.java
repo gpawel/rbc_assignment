@@ -19,7 +19,7 @@ public class BaseTest {
     public static LoblawsPage loblawsPage;
     public static SearchResultsPage resultsPage;
     @Parameters({ "query" })
-    @BeforeSuite
+    @BeforeMethod
     public void setUpSuite(@Optional("apples") String searchString) {
         Config.getConfig();
         query = searchString;
@@ -29,18 +29,12 @@ public class BaseTest {
 
     }
 
-    @BeforeMethod
-    public void setUpTestMethod() {
-        loblawsPage.goHomePage();
-    }
-
-
     @Test
     public void firtstTest() {
         System.out.println("Hello World");
     }
 
-    @AfterSuite
+    @AfterMethod
     public void tearDownSuite() {
         driver.quit();
     }

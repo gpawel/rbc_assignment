@@ -16,6 +16,7 @@ public class LoblawsPage extends Page {
     private By logo = By.cssSelector(".logo");
     private By quickLinks = By.cssSelector(".block-wrapper.block-wrapper--block-type-block-cta-row.block-wrapper--block-style-vertical");
     private By signIn = By.cssSelector(".sign-in.account__login-link");
+    private By chooseLocation = By.cssSelector("a.store-locator-link.notification-item__content__message__link");
 
     public LoblawsPage(WebDriver driver) {
         super(driver);
@@ -48,6 +49,11 @@ public class LoblawsPage extends Page {
         return new SignIn(driver);
     }
 
+    public LocationSelector openLocationSelector() {
+        wait.until(ExpectedConditions.presenceOfElementLocated(chooseLocation));
+        driver.findElement(chooseLocation).click();
+        return new LocationSelector(driver);
+    }
 
 
 

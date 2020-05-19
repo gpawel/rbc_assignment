@@ -40,7 +40,6 @@ public class SearchResultsPage extends Page {
         wait.until(ExpectedConditions.presenceOfElementLocated(pagination));
         pageSize = getNumberOfItemsOnPages();
         totalFound = getTotalFound();
-
     }
 
     public int getTotalFound() {
@@ -145,6 +144,16 @@ public class SearchResultsPage extends Page {
         return result.get(0);
     }
 
+    public Product getProdcutInfoByIndex(int productNumberOnPage) {
+        if (productNumberOnPage < 1 ) throw new RuntimeException("Product number on page should be more than 0");
+        String xpathStr = "//div[@data-track-product-index='"+productNumberOnPage+"']/../..";
+        By xpath = By.xpath(xpathStr);
+        List<WebElement> els = driver.findElements(xpath);
+        WebElement el = els.get(0);
+        ProductInfoParser parser = new ProductInfoParser(driver);
+        return parser.parseSingleProductElement(el);
+    }
+
     public ShoppingCart addItemToShoppingCart(int productNumberOnPage) {
         if (productNumberOnPage <1 ) throw new RuntimeException("Product number should be more than 0");
         driver.findElements(addButtonSelector).get(productNumberOnPage-1).click();
@@ -153,7 +162,7 @@ public class SearchResultsPage extends Page {
         wait.until(ExpectedConditions.presenceOfElementLocated(selectLocationLinkLocator));
         driver.findElement(selectLocationLinkLocator).click();
         LocationSelector locationSelector = new LocationSelector(driver);
-        locationSelector.searchLocation("bathurst");
+        locationSelector.searchLocation("dufferin");
         locationSelector.pickUpLocation(2);
         return new ShoppingCart(driver);
     }

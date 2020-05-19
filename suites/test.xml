@@ -2,25 +2,44 @@
 <suite name="assignment" verbose="1" >
 
     <parameter name="queri"  value="apples"/>
+<!--
+     <test name="Test 1">
+         <classes>
+             <class name="org.pg.rbc.assignment.assignment.Task1">
+                 <methods>
+                     <include name="testProductsSorted"/>
+                 </methods>
+             </class>
+         </classes>
+     </test>
 
-    <test name="Test 1">
+     <test name="Test 2">
+         <classes>
+             <class name="org.pg.rbc.assignment.assignment.Task2">
+                 <methods>
+                     <include name="testPriceReduction"/>
+                 </methods>
+             </class>
+         </classes>
+     </test>
+-->
+    <test name="Test 3">
         <classes>
-            <class name="org.pg.rbc.assignment.assignment.Task1">
+            <class name="org.pg.rbc.assignment.assignment.Task3">
                 <methods>
-                    <include name="testProductsSorted"/>
+                    <include name="addItemToShoppingCart"/>
                 </methods>
             </class>
         </classes>
     </test>
-   <!--
-    <test name="Test 2">
+    <test name="Test 4">
         <classes>
-            <class name="org.pg.rbc.assignment.assignment.Task2">
+            <class name="org.pg.rbc.assignment.assignment.Task4">
                 <methods>
-                    <include name="testPriceReduction"/>
+                    <include name="chooseLocation"/>
                 </methods>
             </class>
         </classes>
     </test>
-    -->
+
 </suite>

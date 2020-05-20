@@ -10,7 +10,8 @@ public class LocationSelector extends Page {
     private By storeLocatorContentLocator = By.cssSelector("div.store-locator-content");
     private By locationSearchField = By.cssSelector("input.location-search__search__input");
     private By storeLocatorContentList = By.cssSelector("ul.location-list");
-    private By pickupLocationButtonSelector = By.cssSelector("button.location-set-store__button.location-set-store__button--is-not-current-location.location-set-store__button--is-shoppable.location-set-store__button--is-store.location-set-store__button--is-not-this-banner");
+    //private By pickupLocationButtonSelector = By.cssSelector("button.location-set-store__button.location-set-store__button--is-not-current-location.location-set-store__button--is-shoppable.location-set-store__button--is-store.location-set-store__button--is-not-this-banner");
+    private By pickupLocationButtonSelector = By.cssSelector("div.location-list-item-actions__button");
     private By continueButton = By.cssSelector("a.fulfillment-location-confirmation__actions__button");
     private By openLocationButtonSelector = By.cssSelector("button.fulfillment-mode-button");
     private By locationDetailsLinkSelector = By.cssSelector("a.pickup-location-details__link");
@@ -25,9 +26,13 @@ public class LocationSelector extends Page {
     public void searchLocation(String locationTofind) {
         WebElement field = driver.findElement(locationSearchField);
         field.sendKeys(locationTofind);
-        pause(500);
+        field.sendKeys(Keys.ARROW_DOWN);
         field.sendKeys(Keys.ENTER);
+        field.sendKeys(Keys.ENTER);
+        wait.until(ExpectedConditions.presenceOfElementLocated(pickupLocationButtonSelector));
+        wait.until(ExpectedConditions.elementToBeClickable(pickupLocationButtonSelector));
         wait.until(ExpectedConditions.presenceOfElementLocated(storeLocatorContentList));
+
     }
 
     public void pickUpLocation(int locationNumber) {
@@ -37,11 +42,13 @@ public class LocationSelector extends Page {
         WebElement el = driver.findElements(pickupLocationButtonSelector).get(locationNumber-1);
         el.click();
         wait.until(ExpectedConditions.presenceOfElementLocated(continueButton));
+        wait.until(ExpectedConditions.elementToBeClickable(continueButton));
         driver.findElement(continueButton).click();
     }
 
     public void openLocationDetails() {
         wait.until(ExpectedConditions.presenceOfElementLocated(openLocationButtonSelector));
+        wait.until(ExpectedConditions.elementToBeClickable(openLocationButtonSelector));
         driver.findElement(openLocationButtonSelector).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(locationDetailsLinkSelector));
         wait.until(ExpectedConditions.elementToBeClickable(locationDetailsLinkSelector));

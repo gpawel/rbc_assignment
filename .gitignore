@@ -5,5 +5,5 @@ target
 *.iml
 .project
 .classpath
-test-output
-
+test-output*
+logs

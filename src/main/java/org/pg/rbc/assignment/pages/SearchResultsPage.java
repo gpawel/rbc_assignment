@@ -156,10 +156,14 @@ public class SearchResultsPage extends Page {
 
     public ShoppingCart addItemToShoppingCart(int productNumberOnPage) {
         if (productNumberOnPage <1 ) throw new RuntimeException("Product number should be more than 0");
+        wait.until(ExpectedConditions.presenceOfElementLocated(addButtonSelector));
+        wait.until(ExpectedConditions.elementToBeClickable(addButtonSelector));
         driver.findElements(addButtonSelector).get(productNumberOnPage-1).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(startNewOrderSelector));
+        wait.until(ExpectedConditions.elementToBeClickable(pcExpressPickUpSelector));
         driver.findElement(pcExpressPickUpSelector).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(selectLocationLinkLocator));
+        wait.until(ExpectedConditions.elementToBeClickable(selectLocationLinkLocator));
         driver.findElement(selectLocationLinkLocator).click();
         LocationSelector locationSelector = new LocationSelector(driver);
         locationSelector.searchLocation("dufferin");

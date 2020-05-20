@@ -11,7 +11,7 @@ public class LocationSelector extends Page {
     private By locationSearchField = By.cssSelector("input.location-search__search__input");
     private By storeLocatorContentList = By.cssSelector("ul.location-list");
     //private By pickupLocationButtonSelector = By.cssSelector("button.location-set-store__button.location-set-store__button--is-not-current-location.location-set-store__button--is-shoppable.location-set-store__button--is-store.location-set-store__button--is-not-this-banner");
-    private By pickupLocationButtonSelector = By.cssSelector("div.location-list-item-actions__button");
+    private By pickupLocationButtonSelector = By.cssSelector("div.location-set-store.location-set-store--location-list-item-actions");
     private By continueButton = By.cssSelector("a.fulfillment-location-confirmation__actions__button");
     private By openLocationButtonSelector = By.cssSelector("button.fulfillment-mode-button");
     private By locationDetailsLinkSelector = By.cssSelector("a.pickup-location-details__link");
@@ -27,7 +27,7 @@ public class LocationSelector extends Page {
         WebElement field = driver.findElement(locationSearchField);
         field.sendKeys(locationTofind);
         field.sendKeys(Keys.ARROW_DOWN);
-        field.sendKeys(Keys.ENTER);
+        field.sendKeys(Keys.ENTER);pause(500);
         field.sendKeys(Keys.ENTER);
         wait.until(ExpectedConditions.presenceOfElementLocated(pickupLocationButtonSelector));
         wait.until(ExpectedConditions.elementToBeClickable(pickupLocationButtonSelector));

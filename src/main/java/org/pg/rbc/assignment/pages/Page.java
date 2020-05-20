@@ -1,16 +1,13 @@
 package org.pg.rbc.assignment.pages;
 
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.pg.rbc.assignment.config.Config;
-
+import org.openqa.selenium.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -68,6 +65,13 @@ public abstract class Page {
     public void scrollToElement(WebElement element) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
         wait.until(ExpectedConditions.visibilityOfAllElements(element));
+    }
+
+    public void scrollToPoint(Point p) {
+        int x = p.getX();
+        int y = p.getY();
+        String script = "window.scrollTo("+x+","+y+");";
+        ((JavascriptExecutor) driver).executeScript(script);
     }
 
     public void scrollByPixels(int length) {

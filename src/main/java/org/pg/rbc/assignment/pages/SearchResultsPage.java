@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.pg.rbc.assignment.model.Product;
 
@@ -67,13 +68,18 @@ public class SearchResultsPage extends Page {
 
 
     public void loadMore() {
-        scrollToTheBottom();
-        wait.until(ExpectedConditions.elementToBeClickable(loadMoreButton));
-        driver.findElement(loadMoreButton).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(loadMoreButton));
+        WebElement button = driver.findElement(loadMoreButton);
+        Point p = button.getLocation();
+        scrollToPoint(p);
+        scrollByPixels(-250);
+        wait.until(ExpectedConditions.elementToBeClickable(button));
+        button.click();
         wait.until(ExpectedConditions.presenceOfElementLocated(pagination));
         wait.until(ExpectedConditions.visibilityOfElementLocated(pagination));
-
     }
+
+
 
     public void loadMore(int pages) {
         for (int i=0; i < pages; i++) loadMore();

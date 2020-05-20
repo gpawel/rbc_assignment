@@ -71,8 +71,8 @@ public class SearchResultsPage extends Page {
         wait.until(ExpectedConditions.presenceOfElementLocated(loadMoreButton));
         WebElement button = driver.findElement(loadMoreButton);
         Point p = button.getLocation();
-        //scrollToPoint(p);
-        scrollByPixels(p.getY()+250);
+        scrollToPoint(p);
+        scrollByPixels(-250);
         wait.until(ExpectedConditions.elementToBeClickable(button));
         button.click();
         wait.until(ExpectedConditions.presenceOfElementLocated(pagination));

@@ -12,8 +12,6 @@ public class Config {
         }
         return config;
     }
-
-
     private String rootPath;
     private String resourcesPath;
     private String chromeDriverPath;
